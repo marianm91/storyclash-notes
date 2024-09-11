@@ -15,4 +15,13 @@ class NoteRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Note::class);
     }
+
+    public function findAllOrderedByCreatedAtAndId()
+    {
+        return $this->createQueryBuilder('n')
+            ->orderBy('n.createdAt', 'ASC')
+            ->addOrderBy('n.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

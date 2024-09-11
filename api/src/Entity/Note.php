@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Note extends Post
 {
     #[ORM\OneToMany(targetEntity:Reply::class, mappedBy:'parentNote')]
+    #[ORM\OrderBy(['createdAt' => 'ASC'])]
     private Collection $replies;
 
     public function getReplies(): Collection

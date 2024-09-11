@@ -3,9 +3,6 @@
     <NotesList/>
   </div>
 </template>
-<style lang="scss" scoped>
-@import "./assets/styles/style";
-</style>
 
 <script>
 import NotesList from './components/NotesList.vue'

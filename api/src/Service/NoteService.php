@@ -30,7 +30,7 @@ class NoteService
 
     public function getAllNotesJson(): array|string|int|float|bool|ArrayObject|null
     {
-        $notes = $this->noteRepository->findAll();
+        $notes = $this->noteRepository->findAllOrderedByCreatedAtAndId();
 
         return $this->serializer->serialize($notes, 'json', [
             'circular_reference_handler' => function ($object) {
@@ -40,13 +40,12 @@ class NoteService
     }
     public function createNote(array $data): Note
     {
-        // Find random user
         $users = $this->userRepository->findAll();
         $randomUser = $users[array_rand($users)];
 
         $note = new Note();
         $note->setContent($data['content']);
-        $note->setUser($randomUser); // Assign random user
+        $note->setUser($randomUser);
 
         if (isset($data['parent_id'])) {
             $parentNote = $this->noteRepository->find($data['parent_id']);
@@ -62,7 +61,6 @@ class NoteService
     public function updateNote(Note $note, array $data): void
     {
         $note->setContent($data['content']);
-        $note->setUpdatedAt(new \DateTime());
 
         $this->entityManager->flush();
     }

@@ -2,210 +2,134 @@
   <div>
     <!-- Header -->
     <header>
-      <h1>StoryClash Notes</h1>
-      <button class="create-note-btn" @click="openModal">+</button>
+      <div>
+        <h1>Storyclash Notes</h1>
+        <h3 class="text-gray">Manage and track your Creators in projects and analyze them.</h3>
+      </div>
+      <button class="btn btn-green btn-lg create-note-btn" @click="openModal">Create a New Note</button>
     </header>
 
-    <!-- Main content area -->
     <main>
       <ul class="notes-list">
-        <li class="note-item" v-for="note in notes" :key="note.id">
-          <div class="note-header">
-            <img :src="note.user.avatar" alt="User Avatar" class="user-avatar" />
-            <div class="user-info">
-              <h4>{{ note.user.name }}</h4>
-              <span>{{ note.createdAt }}</span>
-            </div>
-            <div class="note-actions">
-              <button @click="openReplyModal(note.id)" class="action-btn">Reply</button>
-              <button @click="deleteNote(note.id)" class="action-btn">Delete</button>
-            </div>
-          </div>
-          <div class="note-content">
-            <p>{{ note.content }}</p>
-          </div>
-
-          <!-- Replies -->
-          <ul class="replies-list" v-if="note.replies">
-            <li v-for="reply in note.replies" :key="reply.id" class="reply-item">
-              <div class="reply-header">
-                <img :src="reply.user.avatar" alt="User Avatar" class="user-avatar" />
-                <div class="user-info">
-                  <h5>{{ reply.user.name }}</h5>
-                  <span>{{ reply.createdAt }}</span>
-                </div>
-              </div>
-              <div class="reply-content">
-                <p>{{ reply.content }}</p>
-              </div>
+        <li v-for="note in notes" :key="note.id">
+          <NoteItem
+              :user="note.user"
+              :content="note.content"
+              :createdAt="note.createdAt"
+              :actions="[
+              { label: 'Edit', handler: () => openEditModal(note.id, note.content) },
+              { label: 'Delete', handler: () => showDeleteWarning(note.id) }
+            ]"
+          />
+          <div v-if="note.replies">
+            <li v-for="reply in note.replies" :key="reply.id">
+              <NoteItem
+                  :user="reply.user"
+                  :content="reply.content"
+                  :createdAt="reply.createdAt"
+                  :actions="[]"
+                  :isReply="true"
+              />
             </li>
-          </ul>
-
-          <button class="reply-btn" @click="openReplyModal(note.id)">Reply</button>
+          </div>
+          <button class="btn btn-secondary reply-btn" @click="openReplyModal(note.id)">Reply</button>
         </li>
       </ul>
     </main>
 
     <!-- Modal component -->
-    <NoteModal v-if="showModal" @save="fetchNotes" @close="closeModal" />
+    <NoteModal v-if="showModal" :parent-id="createNoteParentId" :note-id="noteToUpdateId" :content="noteToUpdateContent"
+               @save="fetchNotes" @close="closeModal"/>
+    <ConfirmationModal v-if="showConfirmationModal" :noteId="noteToDeleteId" @confirm="deleteNote"
+                       @close="closeConfirmationModal"/>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 import NoteModal from './NoteModal.vue';
+import NoteItem from './NoteItem.vue';
+import ConfirmationModal from './ConfirmationModal.vue';
 
 export default {
   components: {
-    NoteModal
+    NoteModal,
+    NoteItem,
+    ConfirmationModal
   },
   data() {
     return {
       notes: [],
       showModal: false,
-      parentId: null
+      showConfirmationModal: false,
+      createNoteParentId: null,
+      noteToUpdateId: null,
+      noteToUpdateContent: null,
+      noteToDeleteId: null,
     };
   },
   methods: {
     fetchNotes() {
-      axios.get('/api/notes')
-          .then(response => {
-            this.notes = response.data;
-          });
+      axios.get('/api/notes').then((response) => {
+        this.notes = response.data;
+      });
     },
     openModal() {
       this.showModal = true;
     },
     closeModal() {
+      this.createNoteParentId = null;
+      this.noteToUpdateId = null;
       this.showModal = false;
+      this.noteToUpdateContent = null;
     },
-    openReplyModal(parentId) {
-      this.parentId = parentId;
+    openEditModal(noteId, content) {
+      this.noteToUpdateId = noteId;
+      this.noteToUpdateContent = content;
       this.openModal();
     },
+    openReplyModal(parentId) {
+      this.createNoteParentId = parentId;
+      this.openModal();
+    },
+    showDeleteWarning(noteId) {
+      this.noteToDeleteId = noteId;
+      this.showConfirmationModal = true;
+    },
+    closeConfirmationModal() {
+      this.showConfirmationModal = false;
+      this.noteToDeleteId = null;
+    },
     deleteNote(id) {
-      axios.delete(`/api/notes/${id}`)
-          .then(() => this.fetchNotes());
-    }
+      axios.delete(`/api/notes/${id}`).then(() => this.fetchNotes());
+    },
   },
   mounted() {
     this.fetchNotes();
-  }
-}
+  },
+};
 </script>
 
 <style scoped lang="scss">
 @import '../assets/styles/_variables.scss';
 
-.notes-list {
-  list-style: none;
-  padding: 0;
+header h3 {
+  font-weight: normal;
 }
 
-.note-item {
-  background-color: #f9f9f9;
-  margin-bottom: 20px;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.create-note-btn {
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+}
 
-  .note-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.notes-list {
+  list-style: none;
 
-    .user-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      margin-right: 10px;
-    }
-
-    .user-info {
-      h4 {
-        margin: 0;
-      }
-
-      span {
-        font-size: 0.8rem;
-        color: #777;
-      }
-    }
-
-    .note-actions {
-      .action-btn {
-        background-color: #fff;
-        border: 1px solid #ddd;
-        border-radius: 50%;
-        width: 35px;
-        height: 35px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        margin-left: 5px;
-
-        &:hover {
-          background-color: #f0f0f0;
-        }
-      }
-    }
+  & > li {
+    border-bottom: 2px solid #ddd;
+    padding:24px;
   }
-
-  .note-content {
-    margin-top: 10px;
-  }
-
-  .replies-list {
-    margin-top: 10px;
-    padding-left: 20px;
-    border-left: 2px solid #ddd;
-
-    .reply-item {
-      background-color: #f1f1f1;
-      padding: 10px;
-      border-radius: 5px;
-      margin-bottom: 10px;
-    }
-
-    .reply-header {
-      display: flex;
-      align-items: center;
-
-      .user-avatar {
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        margin-right: 10px;
-      }
-
-      .user-info {
-        h5 {
-          margin: 0;
-          font-size: 0.9rem;
-        }
-
-        span {
-          font-size: 0.7rem;
-          color: #999;
-        }
-      }
-    }
-  }
-
   .reply-btn {
-    display: inline-block;
-    margin-top: 10px;
-    background-color: $green;
-    color: #fff;
-    border-radius: 5px;
-    padding: 5px 10px;
-    cursor: pointer;
-    border: none;
-
-    &:hover {
-      background-color: darken($green, 10%);
-    }
+    margin-left: 45px;
   }
 }
 </style>

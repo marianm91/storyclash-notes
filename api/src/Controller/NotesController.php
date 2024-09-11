@@ -8,7 +8,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/api/notes', name: 'api_notes_')]
 class NotesController extends AbstractController
@@ -34,7 +33,7 @@ class NotesController extends AbstractController
     }
 
     #[Route('/{id}', methods: ['PUT'])]
-    public function updateNote(Request $request, int $id, NoteRepository $noteRepository, NoteService $NotesService): JsonResponse
+    public function updateNote(Request $request, int $id, NoteRepository $noteRepository, NoteService $noteService): JsonResponse
     {
         $note = $noteRepository->find($id);
 
@@ -43,7 +42,7 @@ class NotesController extends AbstractController
         }
 
         $data = json_decode($request->getContent(), true);
-        $NotesService->updateNote($note, $data);
+        $noteService->updateNote($note, $data);
 
         return new JsonResponse(['status' => self::NOTE_UPDATED]);
     }
