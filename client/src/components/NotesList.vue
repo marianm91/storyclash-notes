@@ -45,7 +45,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import axios from 'axios';
 import NoteModal from './NoteModal.vue';
 import NoteItem from './NoteItem.vue';
@@ -62,10 +62,10 @@ export default {
       notes: [],
       showModal: false,
       showConfirmationModal: false,
-      createNoteParentId: null,
-      noteToUpdateId: null,
-      noteToUpdateContent: null,
-      noteToDeleteId: null,
+      createNoteParentId: null as null | number,
+      noteToUpdateId: null as null | number,
+      noteToDeleteId: null as null | number,
+      noteToUpdateContent: null as null | string,
     };
   },
   methods: {
@@ -83,16 +83,16 @@ export default {
       this.showModal = false;
       this.noteToUpdateContent = null;
     },
-    openEditModal(noteId, content) {
+    openEditModal(noteId: number, content: string) {
       this.noteToUpdateId = noteId;
       this.noteToUpdateContent = content;
       this.openModal();
     },
-    openReplyModal(parentId) {
+    openReplyModal(parentId: number) {
       this.createNoteParentId = parentId;
       this.openModal();
     },
-    showDeleteWarning(noteId) {
+    showDeleteWarning(noteId: number) {
       this.noteToDeleteId = noteId;
       this.showConfirmationModal = true;
     },
@@ -100,8 +100,9 @@ export default {
       this.showConfirmationModal = false;
       this.noteToDeleteId = null;
     },
-    deleteNote(id) {
-      axios.delete(`/api/notes/${id}`).then(() => this.fetchNotes());
+    async deleteNote(id: number) {
+      await axios.delete(`/api/notes/${id}`);
+      this.fetchNotes()
     },
   },
   mounted() {
@@ -126,8 +127,9 @@ header h3 {
 
   & > li {
     border-bottom: 2px solid #ddd;
-    padding:24px;
+    padding: 24px;
   }
+
   .reply-btn {
     margin-left: 45px;
   }

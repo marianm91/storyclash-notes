@@ -1,17 +1,17 @@
 <template>
   <div class="modal-backdrop" @click="$emit('close')">
     <div class="modal-content" @click.stop>
-      <h2>Create a Note</h2>
-      <textarea v-model="updateContent" placeholder="Enter your note"></textarea>
+      <h2>{{ title }}</h2>
+      <textarea v-model="updateContent" rows="10" placeholder="Enter your note"></textarea>
       <div class="actions">
-        <button class="btn-primary" @click="saveNote">Save</button>
-        <button class="btn-secondary" @click="$emit('close')">Cancel</button>
+        <button class="btn-inverted btn-green btn-lg" @click="$emit('close')">Cancel</button>
+        <button class="btn btn-green btn-lg" @click="saveNote">{{ actionText }}</button>
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import axios from "axios";
 
 export default {
@@ -31,7 +31,21 @@ export default {
   },
   data() {
     return {
+      title: '',
+      actionText: '',
       updateContent: this.content
+    }
+  },
+  mounted() {
+    if (this.noteId) {
+      this.title = 'Edit Note';
+      this.actionText = 'Save Note';
+    } else if (this.parentId) {
+      this.title = 'Create a new Reply';
+      this.actionText = 'Create Reply';
+    } else {
+      this.title = 'Create a new Note';
+      this.actionText = 'Create Note';
     }
   },
   methods: {
@@ -75,17 +89,14 @@ h2 {
 }
 
 textarea {
-  width: 100%;
-  height: 100px;
   padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
   margin-bottom: 20px;
+  width: calc(100% - 15px);
 }
 
 .actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   gap: 10px;
 }
 

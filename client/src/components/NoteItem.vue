@@ -6,7 +6,7 @@
       <div class="user-info">
         <h4 v-if="!isReply">{{ user.name }}</h4>
         <h5 v-else>{{ user.name }}</h5>
-        <span>{{ createdAt }}</span>
+        <span>{{ formatDate(createdAt) }}</span>
       </div>
       <div class="note-actions">
         <button v-for="(action, index) in actions" :key="index" class="btn" @click="action.handler">
@@ -20,8 +20,10 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import DateTimeMixin from '@/mixins/DateTimeMixin.vue'
 export default {
+  mixins: [DateTimeMixin],
   props: {
     user: {
       type: Object,

@@ -1,17 +1,17 @@
 <template>
   <div class="modal-backdrop" @click="$emit('close')">
     <div class="modal-content" @click.stop>
-      <h2>Are you sure?</h2>
-      <p>Do you really want to delete this note? This action cannot be undone.</p>
+      <h2>Are you sure you want to delete?</h2>
+      <p>By deleting this note all replies will be deleted too. This cannot be undone!</p>
       <div class="actions">
-        <button class="btn-primary" @click="confirmDelete">Delete</button>
-        <button class="btn-secondary" @click="$emit('close')">Cancel</button>
+        <button class="btn-inverted btn-green btn-lg" @click="$emit('close')">Cancel</button>
+        <button class="btn btn-lg btn-red" @click="confirmDelete">Delete</button>
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   props: ['noteId'],
   methods: {
@@ -36,7 +36,7 @@ p {
 
 .actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   gap: 10px;
 }
 

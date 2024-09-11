@@ -1,7 +1,7 @@
-<script>
+<script lang="ts">
 export default {
   methods: {
-    formatDate(dateString) {
+    formatDate(dateString: string) {
       const date = new Date(dateString);
       return new Intl.DateTimeFormat('de-DE', {
         day: '2-digit',

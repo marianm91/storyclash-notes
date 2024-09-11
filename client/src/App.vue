@@ -1,17 +1,17 @@
 <template>
-  <div id="app">
-    <NotesList/>
-  </div>
+  <NotesList/>
 </template>
 
-<script>
-import NotesList from './components/NotesList.vue'
+<script lang="ts">
+import { defineComponent } from 'vue';
+import NotesList from './components/NotesList.vue';
 import axios from 'axios'
 
 axios.defaults.baseURL = 'http://127.0.0.1:8000'
-export default {
+export default defineComponent({
+  name: 'App',
   components: {
     NotesList
   }
-}
+});
 </script>

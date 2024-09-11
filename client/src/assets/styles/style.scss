@@ -6,6 +6,13 @@
 
 body {
   font-family: Roboto;
+  color: #333;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 125%;
+
+
   background-image: url('@/assets/background.png');
   background-size: 100% 100%;
   background-repeat:   no-repeat;
@@ -39,4 +46,9 @@ main {
 }
 ul{
   padding: unset;
+}
+textarea {
+  background: #F7F8F8;
+  border-radius: 5px;
+  border: 1px solid #E5E5E5;
 }

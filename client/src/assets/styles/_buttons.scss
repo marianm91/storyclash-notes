@@ -15,35 +15,58 @@ button {
     &:hover {
       background-color: #f0f0f0;
     }
-  }
+    &.btn-secondary {
+      background-color: #F2F4F4;
+      border: 1px solid #F2F4F4;
 
-  &.btn-secondary {
-    background-color: #F2F4F4;
-    border: 1px solid #F2F4F4;
+      &:hover {
+        background-color: #fff;
+        border: 1px solid #E5E5E5;
+      }
+    }
 
-    &:hover {
-      background-color: #fff;
-      border: 1px solid #E5E5E5;
+    &.btn-green {
+      background: $green;
+      color: #fff;
+      border: none;
+
+      &:hover {
+        background-color: darken($green, 10%);
+      }
+    }
+
+    &.btn-red {
+      background: #EB0000;
+      color: #fff;
+      border: none;
+
+      &:hover {
+        background-color: darken(#EB0000, 10%);
+      }
     }
   }
 
-  &.btn-green {
-    background: $green;
-    color: #fff;
+  &.btn-inverted {
+    background: transparent;
     border: none;
 
     &:hover {
-      background-color: darken($green, 10%);
+      text-decoration: underline;
+    }
+    &.btn-green {
+      color: $green;
+
+      &:hover {
+        color: darken($green, 10%);
+      }
     }
   }
-
   &.btn-lg {
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
     line-height: 20px;
     padding: 10px 20px;
-    height: 50px;
   }
 }
 
