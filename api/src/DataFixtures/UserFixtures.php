@@ -22,7 +22,6 @@ class UserFixtures extends Fixture
 
             $manager->persist($user);
 
-            // Store a reference to use in NoteFixtures
             $this->addReference(self::USER_REFERENCE . $i, $user);
         }
 

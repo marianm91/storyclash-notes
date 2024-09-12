@@ -20,7 +20,7 @@ class NotesController extends AbstractController
     #[Route('/', methods: ['GET'])]
     public function list(NoteService $notesService): JsonResponse
     {
-        return new JsonResponse($notesService->getAllNotesJson(), 200, [], true);
+        return new JsonResponse($notesService->getAllNotesJson(), JsonResponse::HTTP_OK, [], true);
     }
 
     #[Route('/', methods: ['POST'])]
