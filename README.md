@@ -2,16 +2,16 @@
 
 ## Automatic Setup
 to set up the app you can use a **setup.sh** script in the root directory
-the prerequisites for the script are:
- * docker desktop
+these prerequisites should be accessible from the terminal to run the script:
+ * docker
  * composer
- * symfony CLI
- * node
+ * symfony CLI (symfony serve)
+ * npm
 
 
 ## Manual Setup
 
-### Backend
+#### Backend
 in the **/api** folder
 
 run \
@@ -29,7 +29,7 @@ use Symfony CLI to run the local web server (https://symfony.com/download#step-1
 
 run `symfony serve`
 
-### Frontend
+#### Frontend
 
 in the **/client** folder
 

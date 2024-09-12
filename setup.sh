@@ -52,8 +52,8 @@ troubleshooting() {
   echo "Make sure you installed docker"
   echo "Make sure you installed symfony CLI"
   echo "Make sure you installed composer"
-  echo "Make sure you are using the latest node version"
-  read -p "Press enter to continue after checking the API URL..."
+  echo "Make sure you are using the latest node version and npm"
+  read -p "Press enter to continue..."
 }
 
 # Main script execution
