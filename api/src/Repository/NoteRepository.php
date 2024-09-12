@@ -19,7 +19,7 @@ class NoteRepository extends ServiceEntityRepository
     public function findAllOrderedByCreatedAtAndId()
     {
         return $this->createQueryBuilder('n')
-            ->orderBy('n.createdAt', 'ASC')
+            ->orderBy('n.createdAt', 'DESC')
             ->addOrderBy('n.id', 'ASC')
             ->getQuery()
             ->getResult();

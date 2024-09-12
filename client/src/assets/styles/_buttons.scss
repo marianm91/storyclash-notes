@@ -3,8 +3,8 @@ button {
   transition: background-color 0.3s ease;
 
   &.btn {
-    background-color: #fff;
-    border: 1px solid #E5E5E5;
+    background-color: $white;
+    border: 1px solid $gray-border;
     padding: 6px 12px;
     border-radius: 1.5em;
     display: flex;
@@ -13,21 +13,22 @@ button {
     cursor: pointer;
 
     &:hover {
-      background-color: #f0f0f0;
+      background-color: darken($white, 10%);
     }
+
     &.btn-secondary {
-      background-color: #F2F4F4;
-      border: 1px solid #F2F4F4;
+      background-color: $gray;
+      border: 1px solid $gray;
 
       &:hover {
-        background-color: #fff;
-        border: 1px solid #E5E5E5;
+        background-color: $white;
+        border: 1px solid  #E5E5E5;
       }
     }
 
     &.btn-green {
       background: $green;
-      color: #fff;
+      color: $white;
       border: none;
 
       &:hover {
@@ -36,12 +37,12 @@ button {
     }
 
     &.btn-red {
-      background: #EB0000;
-      color: #fff;
+      background: $red;
+      color: $white;
       border: none;
 
       &:hover {
-        background-color: darken(#EB0000, 10%);
+        background-color: darken($red, 10%);
       }
     }
   }

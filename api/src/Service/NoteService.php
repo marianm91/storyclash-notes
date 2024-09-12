@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Note;
+use App\Entity\Reply;
 use App\Repository\NoteRepository;
 use App\Repository\UserRepository;
 use ArrayObject;
@@ -18,10 +19,11 @@ class NoteService
 
     public function __construct(
         EntityManagerInterface $entityManager,
-        NoteRepository $noteRepository,
-        UserRepository $userRepository,
-        SerializerInterface $serializer
-    ) {
+        NoteRepository         $noteRepository,
+        UserRepository         $userRepository,
+        SerializerInterface    $serializer
+    )
+    {
         $this->entityManager = $entityManager;
         $this->noteRepository = $noteRepository;
         $this->userRepository = $userRepository;
@@ -38,19 +40,22 @@ class NoteService
             }
         ]);
     }
-    public function createNote(array $data): Note
+
+    public function createNote(array $data): Note|Reply
     {
         $users = $this->userRepository->findAll();
         $randomUser = $users[array_rand($users)];
 
-        $note = new Note();
-        $note->setContent($data['content']);
-        $note->setUser($randomUser);
-
         if (isset($data['parent_id'])) {
+            $note = new Reply();
             $parentNote = $this->noteRepository->find($data['parent_id']);
             $note->setParentNote($parentNote);
+        } else {
+            $note = new Note();
         }
+
+        $note->setContent($data['content']);
+        $note->setUser($randomUser);
 
         $this->entityManager->persist($note);
         $this->entityManager->flush();

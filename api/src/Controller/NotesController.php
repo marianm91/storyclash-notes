@@ -18,13 +18,13 @@ class NotesController extends AbstractController
     private const NOTE_NOT_FOUND = 'Note not found!';
 
     #[Route('/', methods: ['GET'])]
-    public function listNotes(NoteService $notesService): JsonResponse
+    public function list(NoteService $notesService): JsonResponse
     {
         return new JsonResponse($notesService->getAllNotesJson(), 200, [], true);
     }
 
     #[Route('/', methods: ['POST'])]
-    public function createNote(Request $request, NoteService $notesService): JsonResponse
+    public function create(Request $request, NoteService $notesService): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         $note = $notesService->createNote($data);
@@ -33,7 +33,7 @@ class NotesController extends AbstractController
     }
 
     #[Route('/{id}', methods: ['PUT'])]
-    public function updateNote(Request $request, int $id, NoteRepository $noteRepository, NoteService $noteService): JsonResponse
+    public function update(Request $request, int $id, NoteRepository $noteRepository, NoteService $noteService): JsonResponse
     {
         $note = $noteRepository->find($id);
 
@@ -48,7 +48,7 @@ class NotesController extends AbstractController
     }
 
     #[Route('/{id}', methods: ['DELETE'])]
-    public function deleteNote(int $id, NoteRepository $noteRepository, NoteService $NotesService): JsonResponse
+    public function delete(int $id, NoteRepository $noteRepository, NoteService $NotesService): JsonResponse
     {
         $note = $noteRepository->find($id);
 

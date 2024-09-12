@@ -22,7 +22,9 @@
 
 <script lang="ts">
 import DateTimeMixin from '@/mixins/DateTimeMixin.vue'
-export default {
+import { defineComponent } from 'vue';
+
+export default defineComponent ({
   mixins: [DateTimeMixin],
   props: {
     user: {
@@ -46,10 +48,12 @@ export default {
       default: false,
     },
   },
-};
+});
 </script>
 
 <style scoped lang="scss">
+@import '../assets/styles/_variables.scss';
+
 .note-item {
   &.reply {
     .note-header {
@@ -84,7 +88,7 @@ export default {
 
       span {
         font-size: 0.8rem;
-        color: #777;
+        color: $text-light-gray;
       }
     }
 
@@ -101,7 +105,7 @@ export default {
   .note-content {
     margin: 10px 60px;
     padding: 5px 24px;
-    border-left: 2px solid #ddd;
+    border-left: $content-border;
   }
 }
 </style>

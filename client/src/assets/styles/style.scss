@@ -6,7 +6,7 @@
 
 body {
   font-family: Roboto;
-  color: #333;
+  color: $text-main;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -38,17 +38,18 @@ header {
 }
 
 main {
-  background-color: #fff;
+  background-color: $white;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px $box-shadow;
   width: 100%;
   max-width: 1200px;
 }
 ul{
   padding: unset;
 }
+
 textarea {
-  background: #F7F8F8;
+  background: $gray-light;
   border-radius: 5px;
-  border: 1px solid #E5E5E5;
+  border: 1px solid $gray-border;
 }
