@@ -7,7 +7,7 @@ import { defineComponent } from 'vue';
 import NotesList from './components/NotesList.vue';
 import axios from 'axios'
 
-axios.defaults.baseURL = 'http://127.0.0.1:8000'
+axios.defaults.baseURL = process.env.VUE_APP_API_URL;
 export default defineComponent({
   name: 'App',
   components: {

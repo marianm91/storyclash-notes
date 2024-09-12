@@ -4,7 +4,7 @@
     <header>
       <div>
         <h1>Storyclash Notes</h1>
-        <h3 class="text-gray">Manage and track your Creators in projects and analyze them.</h3>
+        <span class="text-gray text-lg">Manage and track your Creators in projects and analyze them.</span>
       </div>
       <button class="btn btn-green btn-lg create-note-btn" @click="openCreateModal">Create a New Note</button>
     </header>
@@ -148,11 +148,6 @@ export default defineComponent({
 
 <style scoped lang="scss">
 @import '../assets/styles/_variables.scss';
-
-header h3 {
-  font-weight: normal;
-}
-
 .create-note-btn {
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
 }
