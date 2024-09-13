@@ -30,6 +30,9 @@ setup_backend() {
   echo "Running Symfony server..."
   symfony serve -d
 
+  echo "Please set the API Local Web Server URL in the /client/.env"
+  read -p "Press [Enter] to continue..."
+
   cd -
 }
 
