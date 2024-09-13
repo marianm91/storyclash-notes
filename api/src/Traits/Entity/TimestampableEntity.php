@@ -36,5 +36,4 @@ trait TimestampableEntity
     {
         return $this->updatedAt;
     }
-
 }

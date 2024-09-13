@@ -1,8 +1,7 @@
 <template>
   <div class="modal-backdrop" @click="$emit('close')">
     <div class="modal-content" @click.stop>
-      <h2>{{ title }}</h2>
-      <p></p>
+      <slot></slot>
       <div class="actions">
         <button class="btn-inverted btn-green btn-lg" @click="$emit('close')">Cancel</button>
         <button class="btn btn-lg btn-red" @click="confirm">{{ action }}</button>
@@ -18,11 +17,13 @@ import {defineComponent} from 'vue';
 export default defineComponent({
   props: {
     note: {
-      type: Object as () => Note
+      type: Object as () => Note,
+      required: true
     },
-    title: String,
-    action: String,
-    message: String
+    action: {
+      type: String,
+      required: true
+    },
   },
   methods: {
     confirm() {

@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- Header -->
     <header>
       <div>
         <h1>Storyclash Notes</h1>
@@ -16,25 +15,22 @@
               :user="note.user"
               :content="note.content"
               :createdAt="note.createdAt"
-              :actions="[
-              { label: 'Edit', handler: () => openEditModal(note) },
-              { label: 'Delete', handler: () => showDeleteConfirmation(note) }
-            ]"
+              @edit="openEditModal(note)"
+              @delete="showDeleteConfirmation(note)"
           />
           <button v-if="shouldShowMoreButton(note)"
                   class="btn thread-btn"
                   @click="showAllReplies(note.id)">
-            Show {{ extraRepliesCount(note) }} more replies
+            Show {{ note?.replies?.length - 1 }} more replies
           </button>
-          <div v-if="shouldShowMoreButton(note)" class="thread-extension"></div>
+          <div v-if="shouldShowMoreButton(note)" class="thread-line-extension"></div>
           <ul v-if="note.replies">
             <li v-for="(reply, index) in note.replies" :key="reply.id"
-                :class="{ 'collapsed-reply': !expandedNotes.includes(note.id) && isReplyHidden(index, note.replies.length) }">
+                :class="{ 'collapsed-reply': isReplyCollapsed(index, note) }">
               <NoteItem
                   :user="reply.user"
                   :content="reply.content"
                   :createdAt="reply.createdAt"
-                  :actions="[]"
                   :isReply="true"
               />
             </li>
@@ -50,13 +46,11 @@
     <CreateNoteModal v-if="createNote" @save="fetchNotes" @close="closeModals"/>
     <CreateReplyModal v-if="noteToReplyId" :parent-id="noteToReplyId" @save="fetchNotes" @close="closeModals"/>
 
-    <ConfirmationModal v-if="showConfirmationModal"
-                       :note="noteToDelete"
-                       action="Delete"
-                       title="Are you sure you want to delete?"
-                       message="By deleting this note all replies will be deleted too. This cannot be undone!"
-                       @confirm="deleteNote"
-                       @close="closeConfirmationModal"/>
+    <ConfirmationModal v-if="noteToDelete" :note="noteToDelete" action="Delete" @confirm="deleteNote"
+                       @close="closeConfirmationModal">
+      <h2>Are you sure you want to delete?</h2>
+      <p>By deleting this note all replies will be deleted too. This cannot be undone!</p>
+    </ConfirmationModal>
   </div>
 </template>
 
@@ -82,25 +76,13 @@ export default defineComponent({
     return {
       notes: [] as Array<Note>,
       expandedNotes: [] as Array<number>,
-      showConfirmationModal: false,
       noteToReplyId: null as null | number,
       noteToUpdate: null as null | Note,
       noteToDelete: null as null | Note,
       createNote: null as null | boolean,
     };
   },
-  computed: {
-    shouldShowMoreButton() {
-      return (note: any) => {
-        return note.replies && note.replies.length > 2 && !this.expandedNotes.includes(note.id);
-      };
-    },
-    extraRepliesCount() {
-      return (note: any) => {
-        return note.replies.length - 1;
-      };
-    }
-  },
+
   mounted() {
     this.fetchNotes();
   },
@@ -130,14 +112,15 @@ export default defineComponent({
     },
     showDeleteConfirmation(note: Note) {
       this.noteToDelete = note;
-      this.showConfirmationModal = true;
     },
     closeConfirmationModal() {
-      this.showConfirmationModal = false;
       this.noteToDelete = null;
     },
-    isReplyHidden(index: number, totalReplies: number): boolean {
-      return totalReplies > 2 && index !== totalReplies - 1;
+    isReplyCollapsed(index: number, note: Note): boolean {
+      return !this.expandedNotes.includes(note.id) && note.replies?.length > 2 && index !== note.replies?.length - 1;
+    },
+    shouldShowMoreButton(note: Note) {
+      return note.replies?.length > 2 && !this.expandedNotes.includes(note.id);
     },
     showAllReplies(noteId: number) {
       this.expandedNotes.push(noteId);
@@ -148,6 +131,7 @@ export default defineComponent({
 
 <style scoped lang="scss">
 @import '../assets/styles/_variables.scss';
+
 .create-note-btn {
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
 }
@@ -165,7 +149,8 @@ export default defineComponent({
   .thread-btn {
     margin: 10px 45px;
   }
-  .thread-extension {
+
+  .thread-line-extension {
     border-left: $content-border;
     margin: 10px 60px;
     height: 15px;

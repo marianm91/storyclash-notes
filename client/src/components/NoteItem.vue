@@ -8,10 +8,9 @@
         <h5 v-else>{{ user.name }}</h5>
         <span>{{ formatDate(createdAt) }}</span>
       </div>
-      <div class="note-actions">
-        <button v-for="(action, index) in actions" :key="index" class="btn" @click="action.handler">
-          {{ action.label }}
-        </button>
+      <div v-if="!isReply" class="note-actions">
+        <button class="btn" @click="$emit('edit')">Edit</button>
+        <button class="btn" @click="$emit('delete')">Delete</button>
       </div>
     </div>
     <div class="note-content">
@@ -22,9 +21,9 @@
 
 <script lang="ts">
 import DateTimeMixin from '@/mixins/DateTimeMixin.vue'
-import { defineComponent } from 'vue';
+import {defineComponent} from 'vue';
 
-export default defineComponent ({
+export default defineComponent({
   mixins: [DateTimeMixin],
   props: {
     user: {
@@ -37,10 +36,6 @@ export default defineComponent ({
     },
     createdAt: {
       type: String,
-      required: true,
-    },
-    actions: {
-      type: Array,
       required: true,
     },
     isReply: {

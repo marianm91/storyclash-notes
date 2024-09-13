@@ -1,19 +1,19 @@
 export interface User {
-    id: number;
+    readonly id: number;
     name: string;
     avatar: string;
 }
 
 export interface Note {
-    id: number;
+    readonly id: number;
     user: User;
     content: string;
     createdAt: string;
-    replies?: Reply[];
+    replies: Reply[];
 }
 
-export interface Reply extends Note {
-    id: number;
+export interface Reply {
+    readonly id: number;
     user: User;
     content: string;
     createdAt: string;

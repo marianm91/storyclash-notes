@@ -8,7 +8,6 @@ these prerequisites should be accessible from the terminal to run the script:
  * symfony CLI (symfony serve)
  * npm
 
-
 ## Manual Setup
 
 #### Backend

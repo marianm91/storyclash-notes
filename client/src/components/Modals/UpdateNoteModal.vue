@@ -13,15 +13,19 @@
 import BaseNoteModal from './BaseNoteModal.vue';
 import axios from 'axios';
 import {Note} from "@/types/types";
-import { defineComponent } from 'vue';
+import {defineComponent} from 'vue';
 
-export default defineComponent ({  components: { BaseNoteModal },
+export default defineComponent({
+  components: {BaseNoteModal},
   props: {
-    note: Object as () => Note,
+    note: {
+      type: Object as () => Note,
+      required: true
+    },
   },
   methods: {
     updateNote(content: string) {
-      axios.put(`/api/notes/${this.note?.id}`, { content })
+      axios.put(`/api/notes/${this.note?.id}`, {content})
           .then(() => this.$emit('save'))
           .finally(() => this.$emit('close'));
     }

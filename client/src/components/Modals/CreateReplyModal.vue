@@ -11,15 +11,19 @@
 <script lang="ts">
 import BaseNoteModal from './BaseNoteModal.vue';
 import axios from 'axios';
-import { defineComponent } from 'vue';
+import {defineComponent} from 'vue';
 
-export default defineComponent ({  components: { BaseNoteModal },
+export default defineComponent({
+  components: {BaseNoteModal},
   props: {
-    parentId: Number
+    parentId: {
+      type: Number,
+      required: true
+    },
   },
   methods: {
     createReply(content: string) {
-      axios.post('/api/notes/', { content, parent_id: this.parentId })
+      axios.post('/api/notes/', {content, parent_id: this.parentId})
           .then(() => this.$emit('save'))
           .finally(() => this.$emit('close'));
     }
