@@ -61,12 +61,13 @@ export default defineComponent({
     align-items: center;
 
     .note-icon {
+      width: 16px;
       margin: 0 6px;
     }
 
     .user-avatar {
-      width: 35px;
-      height: 35px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       margin: 0 6px;
     }
