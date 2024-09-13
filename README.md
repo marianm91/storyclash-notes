@@ -5,7 +5,7 @@ to set up the app you can use a **setup.sh** script in the root directory
 these prerequisites should be accessible from the terminal to run the script:
  * docker
  * composer
- * symfony CLI (symfony serve)
+ * symfony CLI (symfony server)
  * npm
 
 ## Manual Setup
